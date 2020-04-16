@@ -63,7 +63,7 @@ def report_current_results(
         population: int,
         top_entries: List[Dict[str, Any]],
         best_entry: Dict[str, Any]
-) -> None:
+) -> None:  # pragma: no cover
     """
     Print current results in a format of table row.
 
