@@ -27,7 +27,7 @@ setup(
     license='MIT',
     keywords=[
         'blackbox_optimization',
-        'numeric_optimization',
+        'numerical_optimization',
         'crossentropy'
     ],
     packages=find_packages(),
