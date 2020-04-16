@@ -1,0 +1,61 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{algorithm}      % environment for algorithms
+\usepackage{algorithmic}    % pseudocode
+
+% set page geometry
+\usepackage[verbose=true,letterpaper]{geometry}
+\AtBeginDocument{
+  \newgeometry{
+    textheight=9in,
+    textwidth=6in,
+    top=1in,
+    headheight=14pt,
+    headsep=25pt,
+    footskip=30pt
+  }
+}
+
+
+\title{A Brief Overview of Cross-Entropy Method}
+\date{}
+
+
+\begin{document}
+	
+\maketitle
+	
+Initially, cross-entropy method was developed for estimation of rare events probability \cite{rubinstein1997optimization}. However, it was found that it is also appropriate for solving optimization problems.
+
+Algorithm \ref{alg:crossentropy} defines a variant of cross-entropy method for optimization. 
+
+\begin{algorithm}
+	\caption{Cross-entropy method for optimization} \label{alg:crossentropy}
+	\textbf{Input:} $X$ -- set of elements, $f: X \to \mathbb{R}$ -- target function, $u(\cdot, w)$ -- probabilistic distribution over $X$ parametrized by vector $w$. \\
+	\textbf{Output:} $\hat{w}$ -- approximate solution to the problem $\max_w \mathbb{E}_{x \sim u(\cdot, w)} f(x)$. \\
+	\textbf{Hyperparameters:} $w^{(0)}$ -- initial value of $w$; $N$ -- number of iterations, $n$ -- number of vectors to draw at each iteration, $\sigma$ -- standard deviation for vectors generation, $m$ -- number of trials for each vector; $\rho$ -- fraction of best vectors to use for update; $\alpha$ -- smoothing coefficient of updates.
+	\begin{algorithmic}[1]
+		\FORALL{$i \in \{1, \dots, N\}$}
+		    \FORALL{$j \in \{1, \dots, n\}$}
+		        \STATE{draw $w^{(i,j)} \sim \mathcal{N}(\cdot \vert w^{(i-1)}, \sigma)$}
+		        \STATE{$r_j \gets \sum_{k = 1}^{m} f(x_k)$ where $x_k \sim u(\cdot, w^{(i,j)})$}
+		    \ENDFOR
+		    \STATE{$r_{\mathrm{threshold}} \gets$ $[\rho n]$-th highest value of $\{r_j: j \in \{1, \dots, n\}\}$}
+		    \STATE{$J \gets \{j: r_j \ge r_{\mathrm{threshold}}\}$}
+		    \STATE{$w^{(i)} \gets \alpha w^{(i-1)} + (1 - \alpha)(\sum_{j \in J} w^{(i,j)}) / [\rho n]$}
+		\ENDFOR
+	    \STATE{$\hat{w} \gets w^{(N)}$}
+	\end{algorithmic}
+\end{algorithm}
+
+Sometimes, hyperparameter $m$ is omitted and intermediate results are not aggregated over multiple trials. In case of $u(\cdot, w)$ that acts like a deterministic function of $w$, $m$ is redundant but, in general case, terminal result can be improved by setting $m > 1$.
+
+More detailed discussion of cross-entropy method can be found in \cite{boer2005tutorial}.
+
+\bibliographystyle{unsrt}  
+\bibliography{references}
+
+\end{document}
