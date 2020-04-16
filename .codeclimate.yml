@@ -1,0 +1,9 @@
+version: "2"
+checks:
+  argument-count:
+    config:
+      threshold: 12
+  file-lines:
+    config:
+      threshold: 1000
+
