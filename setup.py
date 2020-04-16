@@ -17,7 +17,7 @@ with open(os.path.join(current_dir, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='optimiser',
-    version='0.0.1',
+    version='0.1.0',
     description=description,
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -37,7 +37,7 @@ setup(
         'numpy',
     ],
     classifiers=[
-        'Development Status :: 1 - Planning',
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'Topic :: Scientific/Engineering :: Mathematics',
         'License :: OSI Approved :: MIT License',
