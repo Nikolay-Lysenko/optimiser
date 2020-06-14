@@ -50,7 +50,7 @@ def estimate_at_random_point(
     """
     # Reseed `np` in order to surely have independent results among processes.
     np.random.seed(int.from_bytes(os.urandom(4), byteorder='little'))
-    epsilons = np.random.randn(len(mean))
+    epsilons = np.random.randn(*mean.shape)
     params = mean + std * epsilons
     target_fn_kwargs = target_fn_kwargs or {}
     results = [target_fn(params, **target_fn_kwargs) for _ in range(n_trials)]
@@ -150,6 +150,7 @@ def optimize_with_crossentropy_method(
 
     current_mean = initial_mean
     best_entry = {'params': initial_mean, 'score': -np.inf}
+    extra_axis = len(initial_mean.shape)
     if verbose:
         print("population | avg_score_over_current_top |   global_best_score")
     for i_population in range(n_populations):
@@ -161,11 +162,14 @@ def optimize_with_crossentropy_method(
         entries = map_in_parallel(estimate_at_random_point, args, pool_kwargs)
         sorted_entries = sorted(entries, key=lambda x: x['score'])
         top_entries = sorted_entries[-n_top_candidates:]
-        top_params = [x['params'] for x in top_entries]
-        top_params = np.vstack(top_params)
+        top_params = [
+            np.expand_dims(x['params'], axis=extra_axis)
+            for x in top_entries
+        ]
+        top_params = np.concatenate(top_params, axis=extra_axis)
+        new_mean = np.mean(top_params, axis=extra_axis)
         current_mean = (
-            smoothing_coef * current_mean
-            + (1 - smoothing_coef) * np.mean(top_params, axis=0)
+            smoothing_coef * current_mean + (1 - smoothing_coef) * new_mean
         )
 
         new_best_entry = top_entries[-1]

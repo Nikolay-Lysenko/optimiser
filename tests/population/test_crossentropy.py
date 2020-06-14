@@ -44,6 +44,34 @@ def function_to_be_optimized(params: np.ndarray) -> float:
             np.array([0, 0]),
             # `error_threshold`
             0.01
+        ),
+        (
+            # `target_fn`
+            function_to_be_optimized,
+            # `n_populations`
+            25,
+            # `population_size`
+            100,
+            # `elite_fraction`
+            0.1,
+            # `smoothing_coef`
+            0.1,
+            # `initial_mean`
+            np.array([
+                [1, 1],
+                [2, 1],
+            ]),
+            # `std`
+            0.1,
+            # `n_trials_per_candidate`
+            1,
+            # `optimum`
+            np.array([
+                [0, 0],
+                [0, 0],
+            ]),
+            # `error_threshold`
+            0.01
         )
     ]
 )
