@@ -41,8 +41,7 @@ def estimate_at_random_point(
         number of runs for function estimation (it makes sense to set it
         to more than 1 only if `target_fn` is stochastic)
     :param aggregation_fn:
-        name of function that aggregates results from multiple trials into
-        a single value ('min', 'mean', 'median', and 'max' are supported)
+        function that aggregates results from multiple trials into a single value
     :param target_fn_kwargs:
         additional keyword arguments for `target_fn`
     :return:
