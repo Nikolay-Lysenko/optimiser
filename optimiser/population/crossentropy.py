@@ -24,7 +24,7 @@ def estimate_at_random_point(
         n_trials: int,
         aggregation_fn: Callable[[List[float]], float],
         target_fn_kwargs: Optional[Dict[str, Any]] = None
-) -> Dict[str, Any]:
+) -> Dict[str, Any]:  # pragma: no cover  # Actually, this function is covered in child process.
     """
     Generate point from given distribution and estimate function at it.
 
